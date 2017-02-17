@@ -1,5 +1,6 @@
 ---
 - name: host specific things
+  hosts: local
   connection: local
   vars: 
   tasks:
