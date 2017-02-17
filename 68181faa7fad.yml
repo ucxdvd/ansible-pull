@@ -1,0 +1,9 @@
+---
+- name: host specific things
+  hosts: all
+  vars: 
+  tasks:
+  - name: touch /tmp/blabla
+    file: /tmp/blabla ensure: present
+    
+    
