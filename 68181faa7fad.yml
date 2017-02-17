@@ -4,6 +4,6 @@
   vars: 
   tasks:
   - name: touch /tmp/blabla
-    file: /tmp/blabla ensure: present
+    file: /tmp/blabla state: touch
     
     
