@@ -1,6 +1,6 @@
 ---
 - name: host specific things
-  hosts: all
+  connection: local
   vars: 
   tasks:
   - name: touch /tmp/blabla
