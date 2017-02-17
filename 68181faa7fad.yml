@@ -4,6 +4,6 @@
   vars: 
   tasks:
   - name: touch /tmp/blabla
-    file: path: /tmp/blabla state: touch
+    file: path=/tmp/blabla state=touch
     
     
