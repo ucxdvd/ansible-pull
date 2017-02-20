@@ -2,6 +2,8 @@
 - name: typical packages for all sbc's
   hosts: all
   vars:
+  - pippackages:
+    - pushbullet.py
   - packages:
     - common:
       - git
@@ -23,8 +25,6 @@
       - perl-libwww-perl 
       - perl-LWP-Protocol-https
       - python-xmpp
-   - pippackages
-     - pushbullet.py
   tasks:
     - name: install all os packages
       apt: name={{item}} state=present
