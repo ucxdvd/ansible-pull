@@ -28,7 +28,7 @@
   tasks:
     - name: install all os packages
       apt: name={{item}} state=present
-      with_items: 
+      with_subelements:
       - packages.common
       - packages.configmgmt
       - packages.zeroconf
