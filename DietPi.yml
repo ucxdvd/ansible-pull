@@ -12,8 +12,8 @@
   - name: configure centralized syslog
     lineinfile: name=/etc/rsyslog.d/loghost.conf line={{item}}
     with_items:
-    - "*.* @logr"
-    - "*.* @logr.uniconsultix.be"
+    - '*.* @logr'
+    - '*.* @logr.uniconsultix.be'
     notify:
     - restart rsyslog
   handlers:
