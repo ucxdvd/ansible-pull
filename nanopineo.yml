@@ -1,0 +1,12 @@
+---
+- name: host specific things
+  hosts: 127.0.0.1
+  connection: local
+  vars: 
+  tasks:
+  - name: touch /tmp/blabla
+    file: path=/tmp/blabla state=touch
+  - name: cron ansible-pull
+    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -i localhost,127.0.0.1," minute=0 name="launch ansible-pull"
+  - include: sbc-packages.yml  
+    
