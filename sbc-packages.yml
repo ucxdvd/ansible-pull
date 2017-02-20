@@ -1,0 +1,21 @@
+---
+- name: typical packages for all sbc's
+  hosts: all
+  vars:
+  - packages:
+    - common:
+      - git
+    - zeroconf:
+      - avahi-discover
+      - avahi-daemon
+      - libnss-mdns
+    - nfs
+      - nfs-kernel-server
+      - rpcbind
+      - nfs-common
+    - security
+      - libpam-google-authenticator
+    - messaging
+      - python-pip
+  - pip
+    - pushbullet.py
