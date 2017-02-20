@@ -35,7 +35,7 @@
       - packages.nfs
       - packages.security
       - packages.messaging
-   - name: install all pip packages
-     pip: name={{item}} state=present
-     with_items:
-     - {{pippackages}}
+    - name: install all pip packages
+      pip: name={{item}} state=present
+      with_items:
+      - {{pippackages}}
