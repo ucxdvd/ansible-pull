@@ -18,5 +18,5 @@
     - restart rsyslog
     handlers:
     - name: restart rsyslog
-      service: name=rsyslogd state=restarted
+      service: name=rsyslog state=restarted
     
