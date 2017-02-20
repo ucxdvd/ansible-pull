@@ -8,7 +8,7 @@
     file: path=/tmp/blabla state=touch
   - name: cron ansible-pull
     cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -i localhost,127.0.0.1," minute=0 name="launch ansible-pull"
-  - include: sbc-packages.yml
+  
   - name: configure centralized syslog
     lineinfile: name=/etc/rsyslog.d/loghost.conf line={{item}}
     with_items:
@@ -19,4 +19,7 @@
     handlers:
     - name: restart rsyslog
       service: name=rsyslog state=restarted
-    
+- name: package installation
+  hosts: 127.0.0.1
+  connection: local
+  - include: sbc-packages.yml
