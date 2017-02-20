@@ -23,8 +23,8 @@
       - perl-libwww-perl 
       - perl-LWP-Protocol-https
       - python-xmpp
-  - pippackages
-    - pushbullet.py
+   - pippackages
+     - pushbullet.py
   tasks:
     - name: install all os packages
       apt: name={{item}} state=present
