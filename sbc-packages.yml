@@ -18,7 +18,7 @@
     - python-pip
     - libnet-http-perl
     - libwww-perl 
-    - perl-LWP-Protocol-https
+    - liblwp-protocol-https-perl
     - python-xmpp
     
   - name: install all pip packages
