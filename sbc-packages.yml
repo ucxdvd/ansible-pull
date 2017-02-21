@@ -4,7 +4,7 @@
   vars:
   tasks:
   - name: install os packages
-    apt: name={{item}} state=present
+    apt: name={{item}} state=present #force=yes
     with_items:
     - git
     - ansible
@@ -16,9 +16,9 @@
     - nfs-common
     - libpam-google-authenticator
     - python-pip
-#    - libnet-http-perl
-    - libwww-perl 
-    - liblwp-protocol-https-perl
+    #- libnet-http-perl
+    #- libwww-perl 
+    #- liblwp-protocol-https-perl
     - python-xmpp
     
   - name: install all pip packages
