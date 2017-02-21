@@ -8,7 +8,7 @@
     with_items:
     - git
     - ansible
-    - avahi-discover
+    - avahi-tools
     - avahi-daemon
     - libnss-mdns
     - nfs-kernel-server
