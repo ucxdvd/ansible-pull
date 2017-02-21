@@ -16,7 +16,7 @@
     - nfs-common
     - libpam-google-authenticator
     - python-pip
-    - libnet-http-perl
+#    - libnet-http-perl
     - libwww-perl 
     - liblwp-protocol-https-perl
     - python-xmpp
