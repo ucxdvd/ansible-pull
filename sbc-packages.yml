@@ -20,6 +20,7 @@
     #- libwww-perl 
     #- liblwp-protocol-https-perl
     - python-xmpp
+    - docker
     
   - name: install all pip packages
     pip: name={{item}} state=present
