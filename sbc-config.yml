@@ -7,10 +7,10 @@
   - name: touch /tmp/blabla
     file: path=/tmp/blabla state=touch
   - name: cron ansible-pull
-    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -i localhost,127.0.0.1," minute=0 name="launch ansible-pull"
+    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -i localhost," minute=0 name="launch ansible-pull"
   
   - name: configure centralized syslog (logstash)
-    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr.uniconsultix.be'
+    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr.uniconsultix.be:5544'
  #   with_items:
  #   - '*.* @logr'
  #   - '*.* @logr.uniconsultix.be'
