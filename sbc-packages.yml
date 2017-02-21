@@ -25,4 +25,5 @@
   - name: install all pip packages
     pip: name={{item}} state=present
     with_items:
+    - setuptools
     - pushbullet.py
