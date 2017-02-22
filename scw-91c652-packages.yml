@@ -8,12 +8,12 @@
     with_items:
     - git
     - ansible
-    - avahi-utils
-    - avahi-daemon
-    - libnss-mdns
-    - nfs-kernel-server
-    - rpcbind
-    - nfs-common
+#    - avahi-utils
+#    - avahi-daemon
+#    - libnss-mdns
+#    - nfs-kernel-server
+#    - rpcbind
+#    - nfs-common
     - libpam-google-authenticator
     - python-pip
     #- libnet-http-perl
