@@ -5,5 +5,5 @@
   vars: 
   tasks:
  
-- include: sbc-packages.yml
-- include: sbc-config.yml
+- include: scw-91c652-packages.yml
+- include: scw-91c652-config.yml
