@@ -1,0 +1,17 @@
+---
+- name: host specific things
+  hosts: 127.0.0.1
+  connection: local
+  vars: 
+  tasks:
+  - name: touch /etc/ansible-pull-managed
+    file: path=/etc/ansible-pull-managed state=touch
+  - name: cron ansible-pull
+    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -o -i localhost," minute=0 name="launch ansible-pull"
+  - name: notify the world we are done
+    command: logger Ansible-pull run completed
+
+
+  handlers:
+  - name: restart rsyslog
+    service: name=rsyslog state=restarted
