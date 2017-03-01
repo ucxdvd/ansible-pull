@@ -25,8 +25,12 @@
     notify:
     - restart rsyslog
     
-  - name: enable some modules
+  - name: enable usb ethernet
     lineinfile: name=/etc/modules create=yes backup=yes line='g_ether host_addr=11:22:33:44:55:66' 
+  
+  - name: enable some modules
+    lineinfile: name=/etc/modules create=yes backup=yes line='g_serial' 
+  
   
   - name: notify the world we are done
     command: logger Ansible-pull run completed
