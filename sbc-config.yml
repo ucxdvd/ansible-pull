@@ -7,10 +7,10 @@
   - name: touch /tmp/blabla
     file: path=/tmp/blabla state=touch
   - name: cron ansible-pull
-    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -o -i localhost," minute=0 name="launch ansible-pull"
+    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -o -i localhost," minute=0,30 name="launch ansible-pull"
   
   - name: configure centralized syslog (logstash)
-    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr.uniconsultix.be:5544'
+    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr.uniconsultix.be:5544' create=yes backup=yes
  #   with_items:
  #   - '*.* @logr'
  #   - '*.* @logr.uniconsultix.be'
@@ -18,14 +18,20 @@
     - restart rsyslog
     
   - name: configure centralized syslog (local logr)
-    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr'
+    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr' create=yes backup=yes
  #   with_items:
  #   - '*.* @logr'
  #   - '*.* @logr.uniconsultix.be'
     notify:
     - restart rsyslog
+    
+  - name: enable some modules
+    lineinfile: name=/etc/modules create=yes backup=yes line='g_ether host_addr=11:22:33:44:55:66' 
+  
   - name: notify the world we are done
     command: logger Ansible-pull run completed
+  - name: message the world we are done
+    command: /usr/local/bin/alert.sh Ansible-pull run completed
 
 
   handlers:
