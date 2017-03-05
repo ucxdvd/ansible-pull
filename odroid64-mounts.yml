@@ -1,0 +1,27 @@
+---
+- name: mounts for odroid64
+  hosts: 127.0.0.1
+  connection: local
+  vars: 
+  #- usbmounts:
+    
+  tasks:
+  - name: usbmounts
+    mount: fstype=ext4 opts=noatime state=mounted src={{item.src}} name={{item.path}}
+    with_items: 
+    - { src: /dev/datavg2/Multimedia, path: /mnt/datavg2/Multimedia }
+    - { src: /dev/datavg/Multimedia, path: /mnt/datavg/Multimedia }
+    - { src: /dev/datavg/dockerfs, path: /var/lib/docker }
+    - { src: /dev/datavg/Download, path: /mnt/datavg/Download }
+
+  - name: nfsmounts
+    mount: fstype=nfs opts=noatime,nolock state=mounted src={{item.src}} name={{item.path}}
+    with_items: 
+    - { src: "192.168.1.12:/mnt/plex01", path: /mnt/plex01 }
+    - { src: "192.168.1.12:/mnt/plex02", path: /mnt/plex02 }
+    - { src: "192.168.1.17:/mnt/plex03", path: /mnt/plex03 }
+  
+  
+    
+
+
