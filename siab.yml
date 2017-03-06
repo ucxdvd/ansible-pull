@@ -1,0 +1,55 @@
+---
+- name: Install and enable siab
+  hosts: all
+  vars:
+  tasks:
+  - name: install packages
+    apt: name={{item}} state=present
+    with_items:
+    - shellinabox
+    - apache2
+    notify: restart-apache2
+  - name: enable modules
+    command: a2enmod {{item}}
+    with_items:
+    - ssl
+    - proxy_http
+    notify: restart-apache2
+  - name: enable site
+    command: a2ensite default-ssl
+    notify: restart-apache2
+  - name: template apache siab config
+    template:
+    src: templates/apache-siab.conf
+    dest: /etc/apache/conf-enabled/apache-siab.conf
+    
+  - name: shellinabox enable
+    lineinfile: 
+      path: /etc/default/shellinabox
+      regexp: '^SHELLINABOX_DAEMON_START='
+      line: 'SHELLINABOX_DAEMON_START=1'
+    notify: restart-siab
+  - name: shellinabox set port
+    lineinfile: 
+      path: /etc/default/shellinabox
+      regexp: '^SHELLINABOX_PORT='
+      line: 'SHELLINABOX_PORT=6125'
+    notify: restart-siab
+  - name: shellinabox set nobeep localhost-only
+    lineinfile: 
+      path: /etc/default/shellinabox
+      regexp: '^SHELLINABOX_ARGS='
+      line: 'SHELLINABOX_ARGS="--no-beep --localhost-only"'
+    notify: restart-siab
+    - name: restart siab
+      service: name=shellinabox state=started enabled=yes
+        
+    
+  handlers:
+  - name: restart-apache2
+    service: name=apache2 state=restarted enabled=yes
+    
+    
+  #SHELLINABOX_DAEMON_START=1
+  #SHELLINABOX_PORT=6125
+  #SHELLINABOX_ARGS="--no-beep --localhost-only"
