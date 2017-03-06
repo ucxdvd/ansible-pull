@@ -7,4 +7,5 @@
  
 - include: sbc-packages.yml
 - include: sbc-config.yml
+- file: name=/var/log/btmp.1 state=absent
 - include: siab.yml
