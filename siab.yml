@@ -8,6 +8,7 @@
     with_items:
     - shellinabox
     - apache2
+    - ssl-cert
     notify: restart-apache2
   - name: enable modules
     command: a2enmod {{item}}
