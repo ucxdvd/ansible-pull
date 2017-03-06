@@ -17,7 +17,7 @@
     - libpam-google-authenticator
     - python-pip
     #- libnet-http-perl
-    #- libwww-perl 
+    - libwww-perl 
     #- liblwp-protocol-https-perl
     - python-xmpp
     - docker
