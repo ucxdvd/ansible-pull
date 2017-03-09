@@ -7,12 +7,12 @@
     
   tasks:
   - name: usbmounts
-    mount: fstype=ext4 opts=noatime state=mounted src={{item.src}} name={{item.path}}
+    mount: fstype=ext4 opts=noatime,noauto state=mounted src={{item.src}} name={{item.path}}
     with_items: 
-    - { src: /dev/datavg2/Multimedia, path: /mnt/datavg2/Multimedia }
-    - { src: /dev/datavg/Multimedia, path: /mnt/datavg/Multimedia }
-    - { src: /dev/datavg/dockerfs, path: /var/lib/docker }
-    - { src: /dev/datavg/Download, path: /mnt/datavg/Download }
+    - { src: /dev/datavg2/Multimedia, path: /home/pi/plex/data/Multimedia2, opts: noatime,noauto,ro }
+    - { src: /dev/datavg/Multimedia, path: /home/pi/plex/data/Multimedia, opts: noatime,noauto,ro }
+    - { src: /dev/datavg2/dockerfs2, path: /var/lib/docker, opts: noatime,noauto,rw }
+    - { src: /dev/datavg/Download, path: /mnt/datavg/Download, opts: noatime,noauto,rw }
 
   - name: nfsmounts
     mount: fstype=nfs opts=noatime,nolock state=mounted src={{item.src}} name={{item.path}}
