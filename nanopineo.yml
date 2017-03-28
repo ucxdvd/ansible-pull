@@ -1,0 +1,11 @@
+---
+- name: host specific things
+  hosts: 127.0.0.1
+  connection: local
+  vars: 
+  tasks:
+  - file: name=/var/log/btmp.1 state=absent
+ 
+- include: sbc-packages.yml
+- include: sbc-config.yml
+- include: siab.yml
