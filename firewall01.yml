@@ -19,10 +19,10 @@
     - sudo
     - python-pip
     
-  - name: get non-antique version of ansible
-    pip: name=ansible state=present
-    tags:
-    - pip
+#  - name: get non-antique version of ansible
+#    pip: name=ansible state=present
+#    tags:
+#    - pip
     
   - name: set dns
     copy: 
