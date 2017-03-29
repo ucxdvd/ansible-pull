@@ -12,8 +12,7 @@
   - name: set dns
     copy: 
       dest: /etc/resolv.conf
-      content: 
-        \nsearch
+      content: \nsearch
         \nnameserver 62.210.16.6
         \nnameserver 62.210.16.7
   - name: 
