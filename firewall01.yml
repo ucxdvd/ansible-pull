@@ -1,6 +1,6 @@
 ---
 - name: firewall01 playbook
-  hosts: 127.0.0.1
+  hosts: 127.0.0.1 
   connection: local
   tasks:
   - name: add repos with copy, because apt_repository is buggy as hell in this (1.7*) version
