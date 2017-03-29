@@ -12,11 +12,11 @@
   - name: set dns
     copy: 
       dest: /etc/resolv.conf
-      content: \
-        search
-        nameserver 62.210.16.6
-        nameserver 62.210.16.7
-  #- name: 
-  #  copy: 
-  #    dest: /etc/network/interfaces.d/eth0
-  #    content: 
+      content: 
+        \nsearch
+        \nnameserver 62.210.16.6
+        \nnameserver 62.210.16.7
+  - name: 
+    copy: 
+      dest: /etc/network/interfaces.d/eth0
+      content: 
