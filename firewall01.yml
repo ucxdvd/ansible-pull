@@ -2,6 +2,12 @@
 - name: firewall01 playbook
   hosts: all
   tasks:
+  - name: required packages
+    apt: name={{item}} state=latest
+    with_items:
+    - git
+    - openssh-server
+    
   - name: set dns
     copy: 
       dest: /etc/resolv.conf
