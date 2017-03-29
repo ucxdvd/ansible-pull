@@ -6,7 +6,8 @@
   - name: add repos with copy, because apt_repository is buggy as hell in this version
     copy: 
       dest: /etc/apt/sources.list
-      content: "deb http://security.debian.org/ jessie/updates main contrib non-free\ndeb-src http://security.debian.org/ jessie/updates main contrib non-free\ndeb http://ftp.debian.org/debian/ jessie main contrib non-free\n deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n deb-src http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n"
+      content: "deb http://security.debian.org/ jessie/updates main contrib non-free\ndeb-src http://security.debian.org/ jessie/updates main contrib non-free\ndeb http://ftp.debian.org/debian/ jessie main contrib non-free\n deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n deb-src http://ftp.debian.org/debian/ jessie-updates main contrib non-free\ndeb http://ftp.debian.org/debian jessie-backports main contrib non-free\n"
+      backup: yes
   - command: apt-get update
   - name: required packages
     apt: name={{item}} state=latest
