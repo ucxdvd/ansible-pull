@@ -5,7 +5,7 @@
   - name: required packages
     apt: name={{item}} state=latest
     with_items:
-    - git
+    - git #actually git needs to be installed before ansible-pull can run...
     - openssh-server
     
   - name: set dns
