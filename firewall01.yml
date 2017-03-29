@@ -16,6 +16,10 @@
     - openssh-server
     - libpam-google-authenticator
     - sudo
+    - python-pip
+    
+  - name: get non-antique version of ansible
+    pip: name=ansible state=latest
     
   - name: set dns
     copy: 
