@@ -13,6 +13,8 @@
     with_items:
     - git #actually git needs to be installed before ansible-pull can run...
     - openssh-server
+    - libpam-google-authenticator
+    - sudo
     
   - name: set dns
     copy: 
@@ -26,3 +28,35 @@
     copy: 
       dest: /etc/network/interfaces.d/eth1
       content: "auto eth0\n iface eth1 inet static\n address 10.0.0.1\n netmask 255.0.0.0\n"
+  - command: ifup eth0
+  - command: ifup eth1
+  - name: activate forwarding
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: 1
+      sysctl_set: yes
+  - iptables: # Allow related and established connections
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT    
+  - name: iptables forward rule #iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    iptables:
+      table: nat
+      chain: POSTROUTING
+      out_interface: eth0
+      jump: MASQUERADE
+      comment: activate outgoing ip masquerading
+  - iptables: # Forward port 80 to 8080
+    table: nat
+    chain: PREROUTING
+    in_interface: eth0
+    protocol: tcp
+    match: tcp
+    destination_port: 80
+    jump: REDIRECT
+    #to_destination: webr01
+    to_ports: 8080
+    comment: Redirect web traffic to port 8080
+  
+    
+    
