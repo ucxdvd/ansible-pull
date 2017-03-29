@@ -20,7 +20,7 @@
     - python-pip
     
   - name: get non-antique version of ansible
-    pip: name=ansible state=latest
+    pip: name=ansible state=present
     
   - name: set dns
     copy: 
