@@ -52,16 +52,16 @@
       jump: MASQUERADE
       comment: activate outgoing ip masquerading
   - iptables: # Forward port 80 to 8080
-    table: nat
-    chain: PREROUTING
-    in_interface: eth0
-    protocol: tcp
-    match: tcp
-    destination_port: 80
-    jump: REDIRECT
-    #to_destination: webr01
-    to_ports: 8080
-    comment: Redirect web traffic to port 8080
+      table: nat
+      chain: PREROUTING
+      in_interface: eth0
+      protocol: tcp
+      match: tcp
+      destination_port: 80
+      jump: REDIRECT
+      #to_destination: webr01
+      to_ports: 8080
+      comment: Redirect web traffic to port 8080
   
     
     
