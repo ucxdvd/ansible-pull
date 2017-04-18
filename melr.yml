@@ -14,4 +14,7 @@
     - postfix
     - roundcube
     - offlineimap
+    
+  - name: cron ansible-pull
+    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -i localhost,127.0.0.1," minute=* name="launch ansible-pull"
   
