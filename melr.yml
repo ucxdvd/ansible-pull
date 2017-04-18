@@ -10,7 +10,8 @@
   - name: mail server packages
     apt: name={{item}} state=present
     with_items:
-    - courier-imapd
+    - dovecot-imapd
+    - dovecot-gssapi
     - postfix
     - roundcube
     - offlineimap
