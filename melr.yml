@@ -2,8 +2,16 @@
 - name: mailserver setup (debian)
   hosts: all
   tasks:
-  - apt: name={{item}} state=present
+  - name: common packages
+    apt: name={{item}} state=present
+    with_items:
+    - vim
+     
+  - name: mail server packages
+    apt: name={{item}} state=present
     with_items:
     - courier-imapd
     - postfix
     - roundcube
+    - offlineimap
+  
