@@ -1,0 +1,9 @@
+---
+- name: mailserver setup (debian)
+  hosts: all
+  tasks:
+  - apt: name={{item}} state=present
+    with_items:
+    - courier-imapd
+    - postfix
+    - roundcube
