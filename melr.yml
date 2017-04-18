@@ -7,14 +7,16 @@
     with_items:
     - vim
     - tmux
+    - nmon
+    - screen
      
   - name: mail server packages
     apt: name={{item}} state=present
     with_items:
-    - dovecot-imapd
-    - dovecot-gssapi
+    #- dovecot-imapd
+    #- dovecot-gssapi
     - postfix
-    - roundcube
+    - roundcube #no longer in debian?
     - offlineimap
     - maildir-filter
     - maildir-utils
