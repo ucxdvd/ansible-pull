@@ -6,6 +6,7 @@
     apt: name={{item}} state=present
     with_items:
     - vim
+    - tmux
      
   - name: mail server packages
     apt: name={{item}} state=present
@@ -15,6 +16,22 @@
     - postfix
     - roundcube
     - offlineimap
+    - maildir-filter
+    - maildir-utils
+    - maildir-utils-extra
+    - maildirsync
+    - mutt
+    - isync
+    - nmzmail
+    
+  - name: users
+    user: name={{item}}
+    with_items:
+    - ovhdave
+    - ovhpostmaster
+    - ovhucx
+    
+    
     
   - name: cron ansible-pull
     cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -i localhost,127.0.0.1," minute=* name="launch ansible-pull"
