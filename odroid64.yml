@@ -4,7 +4,17 @@
   connection: local
   vars: 
   tasks:
- 
+    - name: fuck off whoopsie
+      lineinfile: 
+        name: /etc/default/whoopsie
+        regexp: 'report_crashes'
+        line: 'report_crashes=false'
+        notify: fuck_whoopsie_off
+        
+  handlers:
+  - name: fuck_whoopsie_off
+    service: name=whoopsie state=restarted
+    
 - include: sbc-packages.yml
 - include: sbc-config.yml
 - include: odroid64-mounts.yml
