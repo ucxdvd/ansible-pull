@@ -1,0 +1,42 @@
+---
+- name: mg playbook (management machine)
+  hosts: 127.0.0.1 
+  connection: local
+  tasks:
+  - name: add repos with copy, because apt_repository is buggy as hell in this version
+    copy: 
+      dest: /etc/apt/sources.list
+      content: "deb http://security.debian.org/ jessie/updates main contrib non-free\ndeb-src http://security.debian.org/ jessie/updates main contrib non-free\ndeb http://ftp.debian.org/debian/ jessie main contrib non-free\n deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n deb-src http://ftp.debian.org/debian/ jessie-updates main contrib non-free\ndeb http://ftp.debian.org/debian jessie-backports main contrib non-free\n"
+      backup: yes
+    tags:
+    - apt
+  - name: run apt-get update
+    command: apt-get update
+    tags:
+    - apt
+  - name: required packages
+    apt: name={{item}} state=latest
+    with_items:
+    - git #actually git needs to be installed before ansible-pull can run...
+    - openssh-server
+    - libpam-google-authenticator
+    - sudo
+    - python-pip
+    - ntp
+    - ntpdate
+    
+#  - name: get non-antique version of ansible
+#    pip: name=ansible state=present
+#    tags:
+#    - pip
+    
+  - name: set dns
+    copy: 
+      dest: /etc/resolv.conf
+      content: "search\nnameserver 62.210.16.6\nnameserver 62.210.16.7\n"
+  - name: eth0 - local raffic
+    copy: 
+      dest: /etc/network/interfaces.d/eth1
+      content: "auto eth0\n iface eth1 inet static\n address 10.0.0.254\n netmask 255.0.0.0\n"
+  - command: ifup eth0
+  
