@@ -1,0 +1,21 @@
+- name: common settings for all servers
+  hosts: 127.0.0.1
+  tasks:
+  - name: cron ansible-pull
+    cron: job="ansible-pull -U https://github.com/ucxdvd/ansible-pull -o -i localhost," minute=0,30 name="launch ansible-pull"
+  
+  - name: configure centralized syslog (logstash)
+    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr.uniconsultix.be:5544' create=yes backup=yes
+ #   with_items:
+ #   - '*.* @logr'
+ #   - '*.* @logr.uniconsultix.be'
+    notify:
+    - restart rsyslog
+    
+  - name: configure centralized syslog (local logr)
+    lineinfile: name=/etc/rsyslog.d/loghost.conf line='*.* @logr' create=yes backup=yes
+ #   with_items:
+ #   - '*.* @logr'
+ #   - '*.* @logr.uniconsultix.be'
+    notify:
+- restart rsyslog
