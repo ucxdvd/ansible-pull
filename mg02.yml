@@ -45,4 +45,5 @@
       dest: /etc/network/interfaces.d/eth1
       content: "auto eth0\n iface eth1 inet static\n address 10.0.0.254\n netmask 255.0.0.0\n"
   - command: ifup eth0
-  
+
+- include: sbc-config.yml
