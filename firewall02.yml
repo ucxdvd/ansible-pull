@@ -1,0 +1,74 @@
+---
+- name: firewall playbook (written with online.net esx failover ip in mind)
+  hosts: 127.0.0.1 
+  connection: local
+  tasks:
+  - name: add repos with copy, because apt_repository is buggy as hell in this version
+    copy: 
+      dest: /etc/apt/sources.list
+      content: "deb http://security.debian.org/ jessie/updates main contrib non-free\ndeb-src http://security.debian.org/ jessie/updates main contrib non-free\ndeb http://ftp.debian.org/debian/ jessie main contrib non-free\n deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free\n deb-src http://ftp.debian.org/debian/ jessie-updates main contrib non-free\ndeb http://ftp.debian.org/debian jessie-backports main contrib non-free\n"
+      backup: yes
+    tags:
+    - apt
+  - name: run apt-get update
+    command: apt-get update
+    tags:
+    - apt
+  - name: required packages
+    apt: name={{item}} state=latest
+    with_items:
+    - git #actually git needs to be installed before ansible-pull can run...
+    - openssh-server
+    - libpam-google-authenticator
+    - sudo
+    - python-pip
+    
+#  - name: get non-antique version of ansible
+#    pip: name=ansible state=present
+#    tags:
+#    - pip
+    
+  - name: set dns
+    copy: 
+      dest: /etc/resolv.conf
+      content: "search\nnameserver 62.210.16.6\nnameserver 62.210.16.7\n"
+  - name: eth0 - outside facing
+    copy: 
+      dest: /etc/network/interfaces.d/eth0
+      content: "auto eth0\n iface eth0 inet static\n address 163.172.224.245\n netmask 255.255.255.255\n pointopoint 62.210.0.1\n gateway 62.210.0.1\n"
+  - name: eth1 - local raffic
+    copy: 
+      dest: /etc/network/interfaces.d/eth1
+      content: "auto eth0\n iface eth1 inet static\n address 10.0.0.1\n netmask 255.0.0.0\n"
+  - command: ifup eth0
+  - command: ifup eth1
+  - name: activate forwarding
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: 1
+      sysctl_set: yes
+  - iptables: # Allow related and established connections
+      chain: INPUT
+      ctstate: ESTABLISHED,RELATED
+      jump: ACCEPT    
+  - name: iptables forward rule #iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    iptables:
+      table: nat
+      chain: POSTROUTING
+      out_interface: eth0
+      jump: MASQUERADE
+      comment: activate outgoing ip masquerading
+  - iptables: # Forward port 80 to 8080
+      table: nat
+      chain: PREROUTING
+      in_interface: eth0
+      protocol: tcp
+      match: tcp
+      destination_port: 80
+      jump: REDIRECT
+      #to_destination: webr01
+      to_ports: 8080
+      comment: Redirect web traffic to port 8080
+  
+    
+    
