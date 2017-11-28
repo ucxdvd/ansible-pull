@@ -5,6 +5,7 @@
 # get primary interface up, with correct mac address
 # add a proper mirror: deb http://ftp.{{country}}.debian.org/debian {{distro}} main contrib non-free
 # apt-get update && apt-get install ansible git
+# apt-get install software-properties-common open-vm-tools
 - name: firewall playbook (written with online.net esx failover ip in mind). Debian assumed.
   hosts: 127.0.0.1 
   connection: local
@@ -36,6 +37,7 @@
     - sudo
     - python-pip
     - open-vm-tools
+    - software-properties-common
     
 #  - name: get non-antique version of ansible
 #    pip: name=ansible state=present
