@@ -20,7 +20,7 @@
   - name: add repos with copy, because apt_repository is buggy as hell in this version
     copy: 
       dest: /etc/apt/sources.list
-      content: "deb http://security.debian.org/ {{distro}}/updates main contrib non-free\ndeb-src http://security.debian.org/ {{distro}}/updates main contrib non-free\ndeb {{mirror}} {{contrib}} main contrib non-free\n deb {{mirror}} jessie-updates main contrib non-free\n deb-src {{mirror}} {{distro}}-updates main contrib non-free\ndeb http://ftp.debian.org/debian {{contrib}}-backports main contrib non-free\n"
+      content: "deb http://security.debian.org/ {{distro}}/updates main contrib non-free\ndeb-src http://security.debian.org/ {{distro}}/updates main contrib non-free\ndeb {{mirror}} {{distro}} main contrib non-free\n deb {{mirror}} jessie-updates main contrib non-free\n deb-src {{mirror}} {{distro}}-updates main contrib non-free\ndeb http://ftp.debian.org/debian {{distro}}-backports main contrib non-free\n"
       backup: yes
     tags:
     - apt
