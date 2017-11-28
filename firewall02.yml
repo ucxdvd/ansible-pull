@@ -1,4 +1,8 @@
 ---
+# manual actions to take on fresh install before debian will work
+# get primary interface up, with correct mac address
+# add a proper mirror: deb http://ftp.{{country}}.debian.org/debian {{distro}} main contrib non-free
+# apt-get update && apt-get install ansible git
 - name: firewall playbook (written with online.net esx failover ip in mind). Debian assumed.
   hosts: 127.0.0.1 
   connection: local
