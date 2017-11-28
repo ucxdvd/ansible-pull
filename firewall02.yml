@@ -7,7 +7,7 @@
   - extip: 163.172.224.245
   - intif: ens224
   - intip: 10.0.0.1
-  - distro: jessie
+  - distro: stretch
   tasks:
   - name: add repos with copy, because apt_repository is buggy as hell in this version
     copy: 
