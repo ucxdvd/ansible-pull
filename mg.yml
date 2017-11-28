@@ -29,6 +29,7 @@
     - dnsmasq
     - nagios3
     - nagios-plugins
+    - open-vm-tools
     
     
   - name: get non-antique version of ansible
