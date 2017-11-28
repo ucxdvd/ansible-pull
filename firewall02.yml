@@ -2,6 +2,11 @@
 - name: firewall playbook (written with online.net esx failover ip in mind)
   hosts: 127.0.0.1 
   connection: local
+  vars:
+  - extif: ens192
+  - extip: 163.172.224.245
+  - intif: ens224
+  - intip: 10.0.0.1
   tasks:
   - name: add repos with copy, because apt_repository is buggy as hell in this version
     copy: 
@@ -22,6 +27,7 @@
     - libpam-google-authenticator
     - sudo
     - python-pip
+    - open-vm-tools
     
 #  - name: get non-antique version of ansible
 #    pip: name=ansible state=present
@@ -34,12 +40,12 @@
       content: "search\nnameserver 62.210.16.6\nnameserver 62.210.16.7\n"
   - name: eth0 - outside facing
     copy: 
-      dest: /etc/network/interfaces.d/eth0
-      content: "auto eth0\n iface eth0 inet static\n address 163.172.224.245\n netmask 255.255.255.255\n pointopoint 62.210.0.1\n gateway 62.210.0.1\n"
-  - name: eth1 - local raffic
+      dest: /etc/network/interfaces.d/{{extif}}
+      content: "auto {{extif}}\n iface {{extif}} inet static\n address {{extip}}\n netmask 255.255.255.255\n pointopoint 62.210.0.1\n gateway 62.210.0.1\n"
+  - name: eth1 - local traffic
     copy: 
-      dest: /etc/network/interfaces.d/eth1
-      content: "auto eth0\n iface eth1 inet static\n address 10.0.0.1\n netmask 255.0.0.0\n"
+      dest: /etc/network/interfaces.d/{{intif}}
+      content: "auto {{intif}}\n iface {{intif}} inet static\n address {{intip}}\n netmask 255.0.0.0\n"
   - command: ifup eth0
   - command: ifup eth1
   - name: activate forwarding
