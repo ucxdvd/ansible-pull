@@ -1,5 +1,7 @@
 ---
 # manual actions to take on fresh install before debian will work
+# create separate 'vswitch' & 'portgroup'
+# add secondary nic in 'portgroup'
 # get primary interface up, with correct mac address
 # add a proper mirror: deb http://ftp.{{country}}.debian.org/debian {{distro}} main contrib non-free
 # apt-get update && apt-get install ansible git
