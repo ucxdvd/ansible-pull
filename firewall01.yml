@@ -2,6 +2,12 @@
 - name: firewall playbook (written with online.net esx failover ip in mind)
   hosts: 127.0.0.1 
   connection: local
+  vars:
+  - extif: ens192
+  - extip: 163.172.201.212
+  - intif: ens224
+  - intip: 10.0.0.1
+  - mirror: http://ftp.nl.debian.org/debian/
   tasks:
   #- name: add repos with copy, because apt_repository is buggy as hell in this version
    # copy: 
@@ -32,16 +38,16 @@
     copy: 
       dest: /etc/resolv.conf
       content: "search\nnameserver 62.210.16.6\nnameserver 62.210.16.7\n"
-  - name: eth0 - outside facing
+  - name: extif - outside facing
     copy: 
-      dest: /etc/network/interfaces.d/eth0
-      content: "auto eth0\n iface eth0 inet static\n address 163.172.201.212\n netmask 255.255.255.255\n pointopoint 62.210.0.1\n gateway 62.210.0.1\n"
-  - name: eth1 - local raffic
+      dest: /etc/network/interfaces.d/{{extif}}
+      content: "auto {{extif}}\n iface {{extif}} inet static\n address {{extip}}\n netmask 255.255.255.255\n pointopoint 62.210.0.1\n gateway 62.210.0.1\n"
+  - name: intif - local traffic
     copy: 
-      dest: /etc/network/interfaces.d/eth1
-      content: "auto eth0\n iface eth1 inet static\n address 10.0.0.1\n netmask 255.0.0.0\n"
-  - command: ifup eth0
-  - command: ifup eth1
+      dest: /etc/network/interfaces.d/{{intif}}
+      content: "auto {{intif}}\n iface {{intif}} inet static\n address {{intip}}\n netmask 255.0.0.0\n"
+  - command: ifup {{extif}}
+  - command: ifup {{intif}}
   - name: activate forwarding
     sysctl:
       name: net.ipv4.ip_forward
@@ -55,13 +61,13 @@
     iptables:
       table: nat
       chain: POSTROUTING
-      out_interface: eth0
+      out_interface: "{{extif}}"
       jump: MASQUERADE
       comment: activate outgoing ip masquerading
   - iptables: # Forward port 80 to 8080
       table: nat
       chain: PREROUTING
-      in_interface: eth0
+      in_interface: "{{extif}}"
       protocol: tcp
       match: tcp
       destination_port: 80
