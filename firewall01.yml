@@ -8,6 +8,7 @@
   - intif: ens224
   - intip: 10.0.0.1
   - mirror: http://ftp.nl.debian.org/debian/
+  - appserver: 10.0.0.3
   tasks:
   #- name: add repos with copy, because apt_repository is buggy as hell in this version
    # copy: 
@@ -53,28 +54,55 @@
       name: net.ipv4.ip_forward
       value: 1
       sysctl_set: yes
-  - iptables: # Allow related and established connections
+    tags:
+    - iptables
+  - name: Allowing related and established connections
+    iptables: # Allow related and established connections
       chain: INPUT
       ctstate: ESTABLISHED,RELATED
       jump: ACCEPT    
-  - name: iptables forward rule #iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    tags:
+    - iptables
+  - name: iptables outgoing masquerading on
     iptables:
       table: nat
       chain: POSTROUTING
       out_interface: "{{extif}}"
       jump: MASQUERADE
       comment: activate outgoing ip masquerading
-  - iptables: # Forward port 80 to 8080
+    tags:
+    - iptables
+  - name: forward ports to appserver
+    iptables: # Forward ports to appserver
       table: nat
       chain: PREROUTING
       in_interface: "{{extif}}"
       protocol: tcp
-      match: tcp
-      destination_port: 80
-      jump: REDIRECT
-      #to_destination: webr01
-      to_ports: 8080
-      comment: Redirect web traffic to port 8080
+      #match: tcp
+      destination_port: "{{item}}"
+      jump: DNAT
+      to_destination: "{{appserver}}:{{item}}"
+      #to_ports: "{{item}}"
+      comment: Redirect web traffic to port "{{item}}"
+    with_items:
+    - 80
+    - 443
+    tags:
+    - iptables
+  - name: Allowing Forward ports to appserver
+    iptables: # Allowing Forward ports to appserver
+      chain: FORWARD
+      protocol: tcp
+      destination: "{{extip}}"
+      destination_port: "{{item}}"
+      jump: ACCEPT
+      ctstate: NEW,ESTABLISHED,RELATED
+      comment: Allow forwarding to port "{{item}}"
+    with_items:
+    - 80
+    - 443
+    tags:
+    - iptables
   
     
     
