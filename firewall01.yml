@@ -72,7 +72,7 @@
       comment: activate outgoing ip masquerading
     tags:
     - iptables
-  - name: forward ports to appserver
+  - name: forward tcp ports to appserver
     iptables: # Forward ports to appserver
       table: nat
       chain: PREROUTING
@@ -87,9 +87,25 @@
     with_items:
     - 80
     - 443
+    - 1194
     tags:
     - iptables
-  - name: Allowing Forward ports to appserver
+  - name: forward udp ports to appserver
+    iptables: # Forward ports to appserver
+      table: nat
+      chain: PREROUTING
+      in_interface: "{{extif}}"
+      protocol: udp
+      destination_port: "{{item}}"
+      jump: DNAT
+      to_destination: "{{appserver}}:{{item}}"
+      #to_ports: "{{item}}"
+      comment: Redirect web traffic to port "{{item}}"
+    with_items:
+    - 1194
+    tags:
+    - iptables
+  - name: Allowing Forward tcp ports to appserver
     iptables: # Allowing Forward ports to appserver
       chain: FORWARD
       protocol: tcp
@@ -101,6 +117,20 @@
     with_items:
     - 80
     - 443
+    - 1194
+    tags:
+    - iptables
+  - name: Allowing Forward udp ports to appserver
+    iptables: # Allowing Forward ports to appserver
+      chain: FORWARD
+      protocol: udp
+      destination: "{{extip}}"
+      destination_port: "{{item}}"
+      jump: ACCEPT
+      ctstate: NEW,ESTABLISHED,RELATED
+      comment: Allow forwarding to port "{{item}}"
+    with_items:
+    - 1194
     tags:
     - iptables
   
